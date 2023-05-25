@@ -18,7 +18,7 @@ export class MyPipelineProjectStack extends cdk.Stack {
 
 
     const repositoryName = this.node.tryGetContext('repositoryName') as string;
-    const repository1 = codecommit.Repository.fromRepositoryName(this, 'MyRepo', repositoryName);
+    const myRepository = codecommit.Repository.fromRepositoryName(this, 'MyRepo', repositoryName);
     
     const manualStep = this.node.tryGetContext('manual') as string;
 
@@ -27,7 +27,7 @@ export class MyPipelineProjectStack extends cdk.Stack {
 
     const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
       actionName: 'CodeCommit_Source',
-      repository: repository1,
+      repository: myRepository,
       branch: 'main',
       output: sourceOutput,
     });
@@ -38,7 +38,7 @@ export class MyPipelineProjectStack extends cdk.Stack {
       project: new codebuild.Project(this, 'MyProject', {
         projectName: 'MyCodeBuildProject5',
         source: codebuild.Source.codeCommit({
-          repository: repository1,
+          repository: myRepository,
           branchOrRef: 'main',
         }),
         environment: {
@@ -95,7 +95,5 @@ export class MyPipelineProjectStack extends cdk.Stack {
   });
 
 
-    // End of constructor
   }
 }
-
